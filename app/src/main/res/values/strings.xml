@@ -1,0 +1,21 @@
+<resources>
+    <string name="app_name">PreUpMoney</string>
+    <string name="hi_username">Hi, Username!</string>
+    <string name="forgot">Забыли пароль?</string>
+    <string name="bank">Счет</string>
+    <string name="payment">Платежи</string>
+    <string name="service">Сервис</string>
+    <string name="investment">Вклады</string>
+    <string name="contact">Контакт</string>
+    <string name="chat">Чат</string>
+    <string name="search">Что ищем сегодня?</string>
+    <string name="search_layout">Поиск</string>
+    <string name="search_in_progress">Ищем...</string>
+    <string name="edit">Редактирование</string>
+    <string name="add">Новый продукт</string>
+    <string name="settings">Настройки</string>
+    <string name="profile">Профиль</string>
+    <string name="sing_in">Войти</string>
+    <string name="register">Нет аккаунта?</string>
+    <string name="welcome">Привет!\nРады тебя видеть</string>
+</resources>
