@@ -18,4 +18,5 @@
     <string name="sing_in">Войти</string>
     <string name="register">Нет аккаунта?</string>
     <string name="welcome">Привет!\nРады тебя видеть</string>
+    <string name="none_found">Похоже наши фиксики ничего не нашли...</string>
 </resources>

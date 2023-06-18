@@ -1,8 +1,10 @@
--- MySQL dump 10.13  Distrib 8.0.31, for Win64 (x86_64)
+CREATE DATABASE  IF NOT EXISTS `preupmoney` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
+USE `preupmoney`;
+-- MySQL dump 10.13  Distrib 8.0.32, for Win64 (x86_64)
 --
 -- Host: localhost    Database: preupmoney
 -- ------------------------------------------------------
--- Server version	8.0.31
+-- Server version	8.0.32
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -69,7 +71,6 @@ CREATE TABLE `bank_account` (
 
 LOCK TABLES `bank_account` WRITE;
 /*!40000 ALTER TABLE `bank_account` DISABLE KEYS */;
-INSERT INTO `bank_account` VALUES (1,1,1,'2022-01-01','Открыт','BlueCard'),(2,1,2,'2022-01-01','Открыт','BlueCard');
 /*!40000 ALTER TABLE `bank_account` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -97,7 +98,6 @@ CREATE TABLE `bank_requs` (
 
 LOCK TABLES `bank_requs` WRITE;
 /*!40000 ALTER TABLE `bank_requs` DISABLE KEYS */;
-INSERT INTO `bank_requs` VALUES (1,1,1,1,1),(2,2,2,2,2);
 /*!40000 ALTER TABLE `bank_requs` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -114,10 +114,7 @@ CREATE TABLE `clients` (
   `gender` varchar(10) NOT NULL,
   `passport_data` varchar(50) NOT NULL,
   `address` varchar(50) NOT NULL,
-  `id_auth` int NOT NULL,
-  PRIMARY KEY (`id_client`),
-  KEY `fk_auth_idx` (`id_auth`),
-  CONSTRAINT `fk_auth` FOREIGN KEY (`id_auth`) REFERENCES `auth_data` (`id_auth`)
+  PRIMARY KEY (`id_client`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -127,7 +124,6 @@ CREATE TABLE `clients` (
 
 LOCK TABLES `clients` WRITE;
 /*!40000 ALTER TABLE `clients` DISABLE KEYS */;
-INSERT INTO `clients` VALUES (1,'Иванов Артём Викторович','Мужской','0000 00000','г. Пермь, ул. Чернышевского, д.28',1),(2,'Иванов Артём Викторович','Женский','0000 00000','г. Пермь, ул. Чернышевского, д.28',2);
 /*!40000 ALTER TABLE `clients` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -141,7 +137,7 @@ DROP TABLE IF EXISTS `company`;
 CREATE TABLE `company` (
   `id_company` int NOT NULL,
   `name_company` varchar(20) NOT NULL,
-  `address` varchar(100) NOT NULL,
+  `address` varchar(30) NOT NULL,
   `license` varchar(50) NOT NULL,
   `phone` int NOT NULL,
   PRIMARY KEY (`id_company`)
@@ -154,7 +150,6 @@ CREATE TABLE `company` (
 
 LOCK TABLES `company` WRITE;
 /*!40000 ALTER TABLE `company` DISABLE KEYS */;
-INSERT INTO `company` VALUES (1,'ПАО \'Преапмани\'','г. Пермь, ул. Чернышевского, д.28','здесь будет ченить',123123123);
 /*!40000 ALTER TABLE `company` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -217,6 +212,14 @@ LOCK TABLES `workers` WRITE;
 /*!40000 ALTER TABLE `workers` DISABLE KEYS */;
 /*!40000 ALTER TABLE `workers` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Dumping events for database 'preupmoney'
+--
+
+--
+-- Dumping routines for database 'preupmoney'
+--
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -227,4 +230,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-12-11 15:48:50
+-- Dump completed on 2023-06-18 19:26:50
