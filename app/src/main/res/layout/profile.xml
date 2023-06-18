@@ -61,6 +61,7 @@
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/block_profile"
         android:layout_width="380dp"
         android:layout_height="660dp"
         android:layout_alignParentLeft="true"

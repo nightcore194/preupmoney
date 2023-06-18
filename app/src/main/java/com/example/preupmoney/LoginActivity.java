@@ -86,6 +86,7 @@ public class LoginActivity extends AppCompatActivity
         }
         cursor.close();
         SharedPreferences preferences = getSharedPreferences("auth", MODE_PRIVATE);
+        SharedPreferences preference_id = getSharedPreferences("id", MODE_PRIVATE);
         String authed = preferences.getString("auth","");
         if(authed.equals("true"))
         {
@@ -146,6 +147,7 @@ public class LoginActivity extends AppCompatActivity
                     SharedPreferences preferences1 = getSharedPreferences("auth", MODE_PRIVATE);
                     SharedPreferences.Editor editor = preferences1.edit();
                     editor.putString("auth", "ture");
+                    editor.putString("id", cursor.getString(0));
                     editor.apply();
                     User user = new User();
                     user.setId(s[1]);
@@ -158,6 +160,7 @@ public class LoginActivity extends AppCompatActivity
                     SharedPreferences preferences1 = getSharedPreferences("auth", MODE_PRIVATE);
                     SharedPreferences.Editor editor = preferences1.edit();
                     editor.putString("auth", "false");
+                    editor.putString("id", "");
                     editor.apply();
                 }
             }

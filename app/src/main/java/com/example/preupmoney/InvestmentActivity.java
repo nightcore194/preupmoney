@@ -3,6 +3,7 @@ package com.example.preupmoney;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.widget.NestedScrollView;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -30,6 +31,7 @@ public class InvestmentActivity extends AppCompatActivity {
     View search;
     NestedScrollView stocks;
     String apiKey = "dNsL06T1Xe6gZmPc6UwLqdeGzDfoZa6A";
+    @SuppressLint("ResourceAsColor")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -84,7 +86,7 @@ public class InvestmentActivity extends AppCompatActivity {
                     // добавление кнопки с данными о тикере
                     Button btn = new Button(getApplicationContext());
                     btn.setText(name_of_stock+"\n"+data_of_stock);
-                    btn.setTextColor(Color.GRAY);
+                    btn.setTextColor(R.color.main_light_font_and_elem);
                     btn.setOnClickListener(view -> {
                         try {
                             SharedPreferences preferences = getSharedPreferences("isExistAny", MODE_PRIVATE);
