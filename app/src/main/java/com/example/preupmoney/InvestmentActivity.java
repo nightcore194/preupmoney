@@ -1,6 +1,7 @@
 package com.example.preupmoney;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.widget.NestedScrollView;
 
 import android.annotation.SuppressLint;
@@ -29,7 +30,7 @@ public class InvestmentActivity extends AppCompatActivity {
     Button bank_account, payment, service, investment, chat;
     ImageButton settings, profile;
     View search;
-    NestedScrollView stocks;
+    ConstraintLayout stocks;
     String apiKey = "dNsL06T1Xe6gZmPc6UwLqdeGzDfoZa6A";
     Intent intent;
     @SuppressLint("ResourceAsColor")

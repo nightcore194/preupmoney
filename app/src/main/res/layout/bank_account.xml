@@ -128,7 +128,6 @@
                 android:id="@+id/csl"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
-
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/add_btn"
                     android:layout_width="match_parent"

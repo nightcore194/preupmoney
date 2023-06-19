@@ -33,7 +33,7 @@ public class ServiceActivity extends AppCompatActivity {
     ImageButton settings, profile;
     View search;
     String apiKey = "dNsL06T1Xe6gZmPc6UwLqdeGzDfoZa6A";
-    NestedScrollView nsv;
+    ConstraintLayout nsv;
     Intent intent;
     @SuppressLint("ResourceAsColor")
     @Override

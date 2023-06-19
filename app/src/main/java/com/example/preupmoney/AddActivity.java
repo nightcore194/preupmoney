@@ -6,6 +6,7 @@ import androidx.constraintlayout.widget.ConstraintSet;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
@@ -55,6 +56,9 @@ public class AddActivity extends AppCompatActivity {
         add_product.setOnClickListener(view ->
         {
             mDb.execSQL("INSERT INTO bank_account (id_client,  id_company, date_of_open, status_of_account, tariff) values(?, ?, date('now'), ?, ?)", new String[]{preference.getString("id",""), "1", "active", choosen_tariff.getSelectedItem().toString()});
+            Cursor cursor = mDb.rawQuery("SELECT id_bank_account FROM bank_account WHERE id=LAST_INSERT_ID()", null);
+            if(cursor.moveToFirst())
+                mDb.execSQL("INSERT INTO bank_requs values(?, ?, ?, ?, ?)", new String[]{cursor.getString(0), "2", "2", "2","2"});
             finish();
         });
         go_back.setOnClickListener(view -> finish());
