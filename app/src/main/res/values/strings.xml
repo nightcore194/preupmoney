@@ -19,4 +19,16 @@
     <string name="register">Нет аккаунта?</string>
     <string name="welcome">Привет!\nРады тебя видеть</string>
     <string name="none_found">Похоже наши фиксики ничего не нашли...</string>
+    <string name="phone">Номер телефона: </string>
+    <string name="pass">Пароль: </string>
+    <string name="pass_confirm">Повторение пароля: </string>
+    <string name="confirm_register">Зарегистрироваться</string>
+    <string name="go_back_str">Назад</string>
+    <string name="save_profile">Сохранить профиль</string>
+    <string name="name_profile">ФИО: </string>
+    <string name="gender_profile">Пол: </string>
+    <string name="pasport_profile">Паспорт: </string>
+    <string name="address_profile">Адрес: </string>
+    <string name="choose_tariff">Выберите тариф: </string>
+    <string name="save_edit">Сохранить</string>
 </resources>

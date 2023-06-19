@@ -36,7 +36,7 @@ public class LoginActivity extends AppCompatActivity
     private BiometricPrompt biometricPrompt;
     SharedPreferences preferences;
     private BiometricPrompt.PromptInfo promptInfo;
-    private Button one, two, three, four, five, six, seven, eight, nine, zero, forgot, singIn;
+    private Button one, two, three, four, five, six, seven, eight, nine, zero, forgot, singIn, register;
     private ImageButton delete, face_id;
     private String pass = "", pass_complete;
     private Boolean auth = false;
@@ -72,6 +72,7 @@ public class LoginActivity extends AppCompatActivity
         phone = findViewById(R.id.phone);
         password = findViewById(R.id.password);
         singIn = findViewById(R.id.sing_in);
+        register = findViewById(R.id.register);
         mDBHelper = new DatabaseHelper(this);
         try {
             mDBHelper.updateDataBase();
@@ -152,6 +153,7 @@ public class LoginActivity extends AppCompatActivity
 
         if(!auth)
             face_id.setVisibility(View.GONE);
+        register.setOnClickListener(view -> startActivity(new Intent(this, RegisterActivity.class)));
         singIn.setOnClickListener(view ->
         {
             for (String[] s: courseModalArrayList)

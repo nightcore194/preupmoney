@@ -1,17 +1,29 @@
 package com.example.preupmoney;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
+import android.content.ContentValues;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.Spinner;
+
+import java.io.IOException;
 
 public class EditActivity extends AppCompatActivity {
 
     Button bank_account, payment, service, investment, chat;
     ImageButton settings, profile, go_back;
+    Spinner choosen_tariff;
+    DatabaseHelper mDBHelper;
+    SQLiteDatabase mDb;
+    ConstraintLayout save_product;
     View search;
     Intent intent;
     @Override
@@ -27,7 +39,25 @@ public class EditActivity extends AppCompatActivity {
         profile = findViewById(R.id.user);
         search = findViewById(R.id.search_bar);
         go_back = findViewById(R.id.go_back);
+        save_product = findViewById(R.id.save_product);
+        choosen_tariff = findViewById(R.id.choosen_tariff);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.tariff, R.layout.add);
+        choosen_tariff.setAdapter(adapter);
+        mDBHelper = new DatabaseHelper(this);
+        try {
+            mDBHelper.updateDataBase();
+        } catch (IOException mIOException) {
+            throw new Error("UnableToUpdateDatabase");
+        }
+        mDb = mDBHelper.getWritableDatabase();
+        SharedPreferences preference = this.getSharedPreferences("preupmoney", MODE_PRIVATE);
         go_back.setOnClickListener(view -> finish());
+        save_product.setOnClickListener(view -> {
+            ContentValues cv = new ContentValues();
+            cv.put("tariff", choosen_tariff.getSelectedItem().toString());
+            mDb.update("bank_account", cv, "id_client = ?", new String[]{preference.getString("id","")});
+            finish();
+        });
         bank_account.setOnClickListener(view -> {
             intent = new Intent(this, BankAccountActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

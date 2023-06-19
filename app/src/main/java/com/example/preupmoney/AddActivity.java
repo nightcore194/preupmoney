@@ -1,18 +1,29 @@
 package com.example.preupmoney;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.Spinner;
+
+import java.io.IOException;
 
 public class AddActivity extends AppCompatActivity {
 
     Button bank_account, payment, service, investment, chat;
     ImageButton settings, profile, go_back;
+    ConstraintLayout add_product;
+    Spinner choosen_tariff;
+    DatabaseHelper mDBHelper;
+    SQLiteDatabase mDb;
     View search;
     Intent intent;
     @Override
@@ -29,6 +40,23 @@ public class AddActivity extends AppCompatActivity {
         profile = findViewById(R.id.user);
         search = findViewById(R.id.search_bar);
         go_back = findViewById(R.id.go_back);
+        choosen_tariff = findViewById(R.id.choosen_tariff);
+        add_product = findViewById(R.id.add_product);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.tariff, R.layout.add);
+        choosen_tariff.setAdapter(adapter);
+        mDBHelper = new DatabaseHelper(this);
+        try {
+            mDBHelper.updateDataBase();
+        } catch (IOException mIOException) {
+            throw new Error("UnableToUpdateDatabase");
+        }
+        mDb = mDBHelper.getWritableDatabase();
+        SharedPreferences preference = this.getSharedPreferences("preupmoney", MODE_PRIVATE);
+        add_product.setOnClickListener(view ->
+        {
+            mDb.execSQL("INSERT INTO bank_account (id_client,  id_company, date_of_open, status_of_account, tariff) values(?, ?, date('now'), ?, ?)", new String[]{preference.getString("id",""), "1", "active", choosen_tariff.getSelectedItem().toString()});
+            finish();
+        });
         go_back.setOnClickListener(view -> finish());
         bank_account.setOnClickListener(view -> {
             intent = new Intent(this, BankAccountActivity.class);

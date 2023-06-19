@@ -25,12 +25,12 @@ public class BankAccountActivity extends AppCompatActivity
     Button bank_account, payment, service, investment, chat;
     ImageButton settings, profile;
     View search, add_btn;
-    NestedScrollView nsv;
     ConstraintLayout csl;
     DatabaseHelper mDBHelper;
     SQLiteDatabase mDb;
     Intent intent;
     Cursor cursor;
+    Float aFloat = 0f;
     @SuppressLint({"ResourceAsColor", "SetTextI18n"})
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -45,7 +45,7 @@ public class BankAccountActivity extends AppCompatActivity
         settings = findViewById(R.id.settings);
         profile = findViewById(R.id.user);
         search = findViewById(R.id.search_bar);
-        nsv = findViewById(R.id.nsv);
+        csl = findViewById(R.id.csl);
         add_btn = findViewById(R.id.add_btn);
         mDBHelper = new DatabaseHelper(this);
         try {
@@ -61,12 +61,15 @@ public class BankAccountActivity extends AppCompatActivity
                 Button btn = new Button(getApplicationContext());
                 btn.setText(cursor.getString(5));
                 btn.setTextColor(R.color.main_light_font_and_elem);
-                btn.setBackgroundColor(R.color.main_light_background);
                 ConstraintLayout.LayoutParams params = new ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.WRAP_CONTENT , ConstraintLayout.LayoutParams.WRAP_CONTENT);
+                aFloat += (aFloat>=1f) ? 0.05f : 0f;
+                params.width = ConstraintLayout.LayoutParams.MATCH_PARENT;
+                params.height = ConstraintLayout.LayoutParams.WRAP_CONTENT;
                 params.leftToLeft = ConstraintLayout.LayoutParams.PARENT_ID;
                 params.rightToRight = ConstraintLayout.LayoutParams.PARENT_ID;
                 params.topToTop = ConstraintLayout.LayoutParams.PARENT_ID;
                 params.bottomToBottom = ConstraintLayout.LayoutParams.PARENT_ID;
+                params.verticalBias = aFloat;
                 btn.setLayoutParams(params);
                 String date = cursor.getString(3);
                 String tariff = cursor.getString(5);
@@ -76,14 +79,13 @@ public class BankAccountActivity extends AppCompatActivity
                     intent.putExtra("tariff", tariff);
                     startActivity(intent);
                 });
-                nsv.addView(btn);
+                csl.addView(btn);
             } while (cursor.moveToNext());
         }
         add_btn.setOnClickListener(view -> {
             intent = new Intent(this, AddActivity.class);
             startActivity(intent);
         });
-        nsv.addView(add_btn);
         bank_account.setOnClickListener(view -> {
             intent = new Intent(this, BankAccountActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

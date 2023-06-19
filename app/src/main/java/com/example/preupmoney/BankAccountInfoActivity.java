@@ -31,7 +31,7 @@ public class BankAccountInfoActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.bank_account_info);
         go_back = findViewById(R.id.go_back);
-        go_back = findViewById(R.id.edit);
+        edit = findViewById(R.id.edit);
         bank_account = findViewById(R.id.bank_account);
         payment = findViewById(R.id.payment);
         service = findViewById(R.id.service);
@@ -77,7 +77,7 @@ public class BankAccountInfoActivity extends AppCompatActivity
         });
         profile.setOnClickListener(view -> startActivity(new Intent(this, ProfileActivity.class)));
         settings.setOnClickListener(view -> startActivity(new Intent(this, SettingsActivity.class)));
-        go_back.setOnClickListener(view -> finish());
         edit.setOnClickListener(view -> startActivity(new Intent(this, EditActivity.class)));
+        go_back.setOnClickListener(view -> finish());
     }
 }
