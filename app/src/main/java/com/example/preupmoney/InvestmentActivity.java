@@ -31,6 +31,7 @@ public class InvestmentActivity extends AppCompatActivity {
     View search;
     NestedScrollView stocks;
     String apiKey = "dNsL06T1Xe6gZmPc6UwLqdeGzDfoZa6A";
+    Intent intent;
     @SuppressLint("ResourceAsColor")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -108,59 +109,39 @@ public class InvestmentActivity extends AppCompatActivity {
         {
             e.printStackTrace();
         }
-        bank_account.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-                startActivity(new Intent(InvestmentActivity.this, BankAccountActivity.class));
-            }
+        bank_account.setOnClickListener(view -> {
+            intent = new Intent(this, BankAccountActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+            finish();
         });
-        payment.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-                startActivity(new Intent(InvestmentActivity.this, PaymentActivity.class));
-            }
+        payment.setOnClickListener(view -> {
+            intent = new Intent(this, PaymentActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+            finish();
         });
-        service.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-                startActivity(new Intent(InvestmentActivity.this, ServiceActivity.class));
-            }
+        service.setOnClickListener(view -> {
+            intent = new Intent(this, ServiceActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+            finish();
         });
-        investment.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-                startActivity(new Intent(InvestmentActivity.this, InvestmentActivity.class));
-            }
+        investment.setOnClickListener(view -> {
+            intent = new Intent(this, InvestmentActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+            finish();
         });
-        chat.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-                startActivity(new Intent(InvestmentActivity.this, ChatActivity.class));
-            }
+        chat.setOnClickListener(view -> {
+            intent =new Intent(this, ChatActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+            finish();
         });
-        profile.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(InvestmentActivity.this, ProfileActivity.class));
-            }
-        });
-        settings.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(InvestmentActivity.this, SettingsActivity.class));
-            }
-        });
-        search.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(InvestmentActivity.this, SearchActivity.class));
-            }
-        });
+        profile.setOnClickListener(view -> startActivity(new Intent(this, ProfileActivity.class)));
+        settings.setOnClickListener(view -> startActivity(new Intent(this, SettingsActivity.class)));
+        search.setOnClickListener(view -> startActivity(new Intent(this, SearchActivity.class)));
 
     }
 }

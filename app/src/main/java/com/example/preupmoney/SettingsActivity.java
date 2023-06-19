@@ -12,6 +12,7 @@ public class SettingsActivity extends AppCompatActivity {
 
     Button bank_account, payment, service, investment, chat;
     ImageButton settings, profile, go_back;
+    Intent intent;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,60 +25,38 @@ public class SettingsActivity extends AppCompatActivity {
         settings = findViewById(R.id.settings);
         profile = findViewById(R.id.user);
         go_back = findViewById(R.id.go_back);
-        go_back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
+        go_back.setOnClickListener(view -> finish());
+        bank_account.setOnClickListener(view -> {
+            intent = new Intent(this, BankAccountActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+            finish();
         });
-        bank_account.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-                startActivity(new Intent(SettingsActivity.this, BankAccountActivity.class));
-            }
+        payment.setOnClickListener(view -> {
+            intent = new Intent(this, PaymentActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+            finish();
         });
-        payment.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-                startActivity(new Intent(SettingsActivity.this, PaymentActivity.class));
-            }
+        service.setOnClickListener(view -> {
+            intent = new Intent(this, ServiceActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+            finish();
         });
-        service.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-                startActivity(new Intent(SettingsActivity.this, ServiceActivity.class));
-            }
+        investment.setOnClickListener(view -> {
+            intent = new Intent(this, InvestmentActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+            finish();
         });
-        investment.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-                startActivity(new Intent(SettingsActivity.this, InvestmentActivity.class));
-            }
+        chat.setOnClickListener(view -> {
+            intent =new Intent(this, ChatActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+            finish();
         });
-        chat.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-                startActivity(new Intent(SettingsActivity.this, ChatActivity.class));
-            }
-        });
-        profile.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-                startActivity(new Intent(SettingsActivity.this, ProfileActivity.class));
-            }
-        });
-        settings.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-                startActivity(new Intent(SettingsActivity.this, SettingsActivity.class));
-            }
-        });
+        profile.setOnClickListener(view -> startActivity(new Intent(this, ProfileActivity.class)));
+        settings.setOnClickListener(view -> startActivity(new Intent(this, SettingsActivity.class)));
     }
 }

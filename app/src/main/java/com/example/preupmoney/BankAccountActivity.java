@@ -24,12 +24,14 @@ public class BankAccountActivity extends AppCompatActivity
 {
     Button bank_account, payment, service, investment, chat;
     ImageButton settings, profile;
-    View search;
+    View search, add_btn;
     NestedScrollView nsv;
     ConstraintLayout csl;
     DatabaseHelper mDBHelper;
     SQLiteDatabase mDb;
-    @SuppressLint("ResourceAsColor")
+    Intent intent;
+    Cursor cursor;
+    @SuppressLint({"ResourceAsColor", "SetTextI18n"})
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -44,6 +46,7 @@ public class BankAccountActivity extends AppCompatActivity
         profile = findViewById(R.id.user);
         search = findViewById(R.id.search_bar);
         nsv = findViewById(R.id.nsv);
+        add_btn = findViewById(R.id.add_btn);
         mDBHelper = new DatabaseHelper(this);
         try {
             mDBHelper.updateDataBase();
@@ -51,74 +54,68 @@ public class BankAccountActivity extends AppCompatActivity
             throw new Error("UnableToUpdateDatabase");
         }
         mDb = mDBHelper.getWritableDatabase();
-        Cursor cursor = mDb.rawQuery("SELECT * FROM bank_account", null);
+        SharedPreferences preference = this.getSharedPreferences("preupmoney", MODE_PRIVATE);
+        cursor = mDb.rawQuery("SELECT * FROM bank_account where id_client = ?", new String[]{preference.getString("id","")});
         if (cursor.moveToFirst()) {
             do {
                 Button btn = new Button(getApplicationContext());
                 btn.setText(cursor.getString(5));
                 btn.setTextColor(R.color.main_light_font_and_elem);
+                btn.setBackgroundColor(R.color.main_light_background);
+                ConstraintLayout.LayoutParams params = new ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.WRAP_CONTENT , ConstraintLayout.LayoutParams.WRAP_CONTENT);
+                params.leftToLeft = ConstraintLayout.LayoutParams.PARENT_ID;
+                params.rightToRight = ConstraintLayout.LayoutParams.PARENT_ID;
+                params.topToTop = ConstraintLayout.LayoutParams.PARENT_ID;
+                params.bottomToBottom = ConstraintLayout.LayoutParams.PARENT_ID;
+                btn.setLayoutParams(params);
+                String date = cursor.getString(3);
+                String tariff = cursor.getString(5);
                 btn.setOnClickListener(view -> {
-                    setContentView(R.layout.bank_account_info);
-                    TextView textView = new TextView(getApplicationContext());
-                    csl = findViewById(R.id.bank_account_full_info);
-                    textView.setText("Дата открытия - "+ cursor.getString(3)+"\nТариф - "+ cursor.getString(5));
-                    csl.addView(textView);
+                    intent = new Intent(this, BankAccountInfoActivity.class);
+                    intent.putExtra("date", date);
+                    intent.putExtra("tariff", tariff);
+                    startActivity(intent);
                 });
                 nsv.addView(btn);
             } while (cursor.moveToNext());
         }
-        bank_account.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-                startActivity(new Intent(BankAccountActivity.this, BankAccountActivity.class));
-            }
+        add_btn.setOnClickListener(view -> {
+            intent = new Intent(this, AddActivity.class);
+            startActivity(intent);
         });
-        payment.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-                startActivity(new Intent(BankAccountActivity.this, PaymentActivity.class));
-            }
+        nsv.addView(add_btn);
+        bank_account.setOnClickListener(view -> {
+            intent = new Intent(this, BankAccountActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+            finish();
         });
-        service.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-                startActivity(new Intent(BankAccountActivity.this, ServiceActivity.class));
-            }
+        payment.setOnClickListener(view -> {
+            intent = new Intent(this, PaymentActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+            finish();
         });
-        investment.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-                startActivity(new Intent(BankAccountActivity.this, InvestmentActivity.class));
-            }
+        service.setOnClickListener(view -> {
+            intent = new Intent(this, ServiceActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+            finish();
         });
-        chat.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-                startActivity(new Intent(BankAccountActivity.this, ChatActivity.class));
-            }
+        investment.setOnClickListener(view -> {
+            intent = new Intent(this, InvestmentActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+            finish();
         });
-        profile.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(BankAccountActivity.this, ProfileActivity.class));
-            }
+        chat.setOnClickListener(view -> {
+            intent =new Intent(this, ChatActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+            finish();
         });
-        settings.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(BankAccountActivity.this, SettingsActivity.class));
-            }
-        });
-        search.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(BankAccountActivity.this, SearchActivity.class));
-            }
-        });
+        profile.setOnClickListener(view -> startActivity(new Intent(this, ProfileActivity.class)));
+        settings.setOnClickListener(view -> startActivity(new Intent(this, SettingsActivity.class)));
+        search.setOnClickListener(view -> startActivity(new Intent(this, SearchActivity.class)));
     }
 }

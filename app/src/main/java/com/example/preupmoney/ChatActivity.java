@@ -36,6 +36,7 @@ public class ChatActivity extends AppCompatActivity {
     NestedScrollView main;
     ChannelListView channelListView;
     User user = LoginActivity.user;
+    Intent intent;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -85,58 +86,38 @@ public class ChatActivity extends AppCompatActivity {
         channelListView.setChannelItemClickListener(channel -> {
             // TODO - start channel activity
         });
-        bank_account.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-                startActivity(new Intent(ChatActivity.this, BankAccountActivity.class));
-            }
+        bank_account.setOnClickListener(view -> {
+            intent = new Intent(this, BankAccountActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+            finish();
         });
-        payment.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-                startActivity(new Intent(ChatActivity.this, PaymentActivity.class));
-            }
+        payment.setOnClickListener(view -> {
+            intent = new Intent(this, PaymentActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+            finish();
         });
-        service.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-                startActivity(new Intent(ChatActivity.this, ServiceActivity.class));
-            }
+        service.setOnClickListener(view -> {
+            intent = new Intent(this, ServiceActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+            finish();
         });
-        investment.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-                startActivity(new Intent(ChatActivity.this, InvestmentActivity.class));
-            }
+        investment.setOnClickListener(view -> {
+            intent = new Intent(this, InvestmentActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+            finish();
         });
-        chat.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-                startActivity(new Intent(ChatActivity.this, ChatActivity.class));
-            }
+        chat.setOnClickListener(view -> {
+            intent =new Intent(this, ChatActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+            finish();
         });
-        profile.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(ChatActivity.this, ProfileActivity.class));
-            }
-        });
-        settings.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(ChatActivity.this, SettingsActivity.class));
-            }
-        });
-        search.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(ChatActivity.this, SearchActivity.class));
-            }
-        });
+        profile.setOnClickListener(view -> startActivity(new Intent(this, ProfileActivity.class)));
+        settings.setOnClickListener(view -> startActivity(new Intent(this, SettingsActivity.class)));
+        search.setOnClickListener(view -> startActivity(new Intent(this, SearchActivity.class)));
     }
 }

@@ -11,8 +11,9 @@ import android.widget.ImageButton;
 public class EditActivity extends AppCompatActivity {
 
     Button bank_account, payment, service, investment, chat;
-    ImageButton settings, profile;
+    ImageButton settings, profile, go_back;
     View search;
+    Intent intent;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -25,58 +26,40 @@ public class EditActivity extends AppCompatActivity {
         settings = findViewById(R.id.settings);
         profile = findViewById(R.id.user);
         search = findViewById(R.id.search_bar);
-        bank_account.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-                startActivity(new Intent(EditActivity.this, BankAccountActivity.class));
-            }
+        go_back = findViewById(R.id.go_back);
+        go_back.setOnClickListener(view -> finish());
+        bank_account.setOnClickListener(view -> {
+            intent = new Intent(this, BankAccountActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+            finish();
         });
-        payment.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-                startActivity(new Intent(EditActivity.this, PaymentActivity.class));
-            }
+        payment.setOnClickListener(view -> {
+            intent = new Intent(this, PaymentActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+            finish();
         });
-        service.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-                startActivity(new Intent(EditActivity.this, ServiceActivity.class));
-            }
+        service.setOnClickListener(view -> {
+            intent = new Intent(this, ServiceActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+            finish();
         });
-        investment.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-                startActivity(new Intent(EditActivity.this, InvestmentActivity.class));
-            }
+        investment.setOnClickListener(view -> {
+            intent = new Intent(this, InvestmentActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+            finish();
         });
-        chat.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-                startActivity(new Intent(EditActivity.this, ChatActivity.class));
-            }
+        chat.setOnClickListener(view -> {
+            intent =new Intent(this, ChatActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+            finish();
         });
-        profile.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(EditActivity.this, ProfileActivity.class));
-            }
-        });
-        settings.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(EditActivity.this, SettingsActivity.class));
-            }
-        });
-        search.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(EditActivity.this, SearchActivity.class));
-            }
-        });
+        profile.setOnClickListener(view -> startActivity(new Intent(this, ProfileActivity.class)));
+        settings.setOnClickListener(view -> startActivity(new Intent(this, SettingsActivity.class)));
+        search.setOnClickListener(view -> startActivity(new Intent(this, SearchActivity.class)));
     }
 }

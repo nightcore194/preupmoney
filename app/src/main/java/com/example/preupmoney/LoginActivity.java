@@ -9,33 +9,32 @@ import androidx.biometric.BiometricManager;
 import androidx.biometric.BiometricPrompt;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
-import android.accounts.Account;
-import android.accounts.AccountManager;
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
-import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
+import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
-import com.example.preupmoney.DatabaseHelper;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Objects;
 import java.util.concurrent.Executor;
+import java.util.concurrent.atomic.AtomicReference;
 
 import io.getstream.chat.android.client.models.User;
 
 public class LoginActivity extends AppCompatActivity
 {
-    private Executor executor;
     private BiometricPrompt biometricPrompt;
+    SharedPreferences preferences;
     private BiometricPrompt.PromptInfo promptInfo;
     private Button one, two, three, four, five, six, seven, eight, nine, zero, forgot, singIn;
     private ImageButton delete, face_id;
@@ -46,6 +45,10 @@ public class LoginActivity extends AppCompatActivity
     private DatabaseHelper mDBHelper;
     private SQLiteDatabase mDb;
     protected static User user = new User();
+    private Handler handler = new Handler();
+    Intent intent;
+    private Executor executor = command -> handler.post(command);
+    @SuppressLint("Recycle")
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -76,19 +79,19 @@ public class LoginActivity extends AppCompatActivity
             throw new Error("UnableToUpdateDatabase");
         }
         mDb = mDBHelper.getWritableDatabase();
-        Cursor cursor = mDb.rawQuery("SELECT * FROM auth_data", null);
+        AtomicReference<Cursor> cursor = new AtomicReference<>(mDb.rawQuery("SELECT * FROM auth_data", null));
         ArrayList<String[]> courseModalArrayList = new ArrayList<>();
-        if (cursor.moveToFirst()) {
+        if (cursor.get().moveToFirst()) {
             do {
-                String[] ss = {cursor.getString(0), cursor.getString(1), cursor.getString(2), cursor.getString(3)};
+                String[] ss = {cursor.get().getString(0), cursor.get().getString(1), cursor.get().getString(2), cursor.get().getString(3)};
                 courseModalArrayList.add(ss);
-            } while (cursor.moveToNext());
+            } while (cursor.get().moveToNext());
         }
-        cursor.close();
-        SharedPreferences preferences = getSharedPreferences("auth", MODE_PRIVATE);
-        SharedPreferences preference_id = getSharedPreferences("id", MODE_PRIVATE);
+        cursor.get().close();
+        preferences = getSharedPreferences("preupmoney", MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
         String authed = preferences.getString("auth","");
-        if(authed.equals("true"))
+        if(Objects.equals(authed, "true"))
         {
             authorize.setVisibility(View.INVISIBLE);
             pin.setVisibility(View.VISIBLE);
@@ -108,8 +111,17 @@ public class LoginActivity extends AppCompatActivity
                 case BiometricManager.BIOMETRIC_ERROR_HW_UNAVAILABLE:
                     auth = false;
                     break;
+                case BiometricManager.BIOMETRIC_ERROR_NONE_ENROLLED:
+                    break;
+                case BiometricManager.BIOMETRIC_ERROR_SECURITY_UPDATE_REQUIRED:
+                    break;
+                case BiometricManager.BIOMETRIC_ERROR_UNSUPPORTED:
+                    break;
+                case BiometricManager.BIOMETRIC_STATUS_UNKNOWN:
+                    break;
             }
         }
+
         biometricPrompt = new BiometricPrompt(LoginActivity.this,
                 executor, new BiometricPrompt.AuthenticationCallback() {
             @Override
@@ -140,97 +152,147 @@ public class LoginActivity extends AppCompatActivity
 
         if(!auth)
             face_id.setVisibility(View.GONE);
-        singIn.setOnClickListener(view -> {
-            for (String[] s: courseModalArrayList) {
-                if(phone.getText().equals(s[1])&&password.getText().equals(s[2]))
+        singIn.setOnClickListener(view ->
+        {
+            for (String[] s: courseModalArrayList)
+            {
+                if(phone.getText().toString().equals(s[1])&&password.getText().toString().equals(s[2]))
                 {
-                    SharedPreferences preferences1 = getSharedPreferences("auth", MODE_PRIVATE);
-                    SharedPreferences.Editor editor = preferences1.edit();
                     editor.putString("auth", "ture");
-                    editor.putString("id", cursor.getString(0));
-                    editor.apply();
+                    editor.putString("id", s[0]);
+                    editor.commit();
                     User user = new User();
-                    user.setId(s[1]);
-                    user.setName(mDb.rawQuery("SELECT FIO FROM clients WHERE id_auth ="+s[0]+"", null).getString(0));
-                    pass_complete = s[3 ];
+                    user.setId(s[0]);
+                    cursor.set(mDb.rawQuery("SELECT * FROM clients where id_client = ?", new String[]{s[0]}));
+                    if (cursor.get().moveToFirst())
+                        user.setName(cursor.get().getString(1));
+                    pass_complete = s[3];
                     authorize.setVisibility(View.INVISIBLE);
                     pin.setVisibility(View.VISIBLE);
-                } else
-                {
-                    SharedPreferences preferences1 = getSharedPreferences("auth", MODE_PRIVATE);
-                    SharedPreferences.Editor editor = preferences1.edit();
-                    editor.putString("auth", "false");
-                    editor.putString("id", "");
-                    editor.apply();
                 }
-            }
 
+            }
         });
         face_id.setOnClickListener(view -> biometricPrompt.authenticate(promptInfo));
         delete.setOnClickListener(view -> {
-            if(pass.length()>0)
-                pass = pass.substring(0,pass.length()-2);
+            if(pass.equals(pass_complete))
+            {
+                intent = new Intent(this, BankAccountActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+                finish();
+            }
         });
 
         one.setOnClickListener(view -> {
             if(pass.length()<4)
                 pass = pass + one.getText();
             if(pass.equals(pass_complete))
-                startActivity(new Intent(LoginActivity.this, BankAccountActivity.class));
+            {
+                intent = new Intent(this, BankAccountActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+                finish();
+            }
         });
         two.setOnClickListener(view -> {
             if(pass.length()<4)
                 pass = pass + two.getText();
             if(pass.equals(pass_complete))
-                startActivity(new Intent(LoginActivity.this, BankAccountActivity.class));
+            {
+                intent = new Intent(this, BankAccountActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+                finish();
+            }
         });
         three.setOnClickListener(view -> {
             if(pass.length()<4)
                 pass = pass + three.getText();
             if(pass.equals(pass_complete))
-                startActivity(new Intent(LoginActivity.this, BankAccountActivity.class));
+            {
+                intent = new Intent(this, BankAccountActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+                finish();
+            }
         });
         four.setOnClickListener(view -> {
             if(pass.length()<4)
                 pass = pass + four.getText();
             if(pass.equals(pass_complete))
-                startActivity(new Intent(LoginActivity.this, BankAccountActivity.class));
+            {
+                intent = new Intent(this, BankAccountActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+                finish();
+            }
         });
         five.setOnClickListener(view -> {
             if(pass.length()<4)
                 pass = pass + five.getText();
             if(pass.equals(pass_complete))
-                startActivity(new Intent(LoginActivity.this, BankAccountActivity.class));
+            {
+                intent = new Intent(this, BankAccountActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+                finish();
+            }
         });
         six.setOnClickListener(view -> {
             if(pass.length()<4)
                 pass = pass + six.getText();
             if(pass.equals(pass_complete))
-                startActivity(new Intent(LoginActivity.this, BankAccountActivity.class));
+            {
+                intent = new Intent(this, BankAccountActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+                finish();
+            }
         });
         seven.setOnClickListener(view -> {
             if(pass.length()<4)
                 pass = pass + seven.getText();
             if(pass.equals(pass_complete))
-                startActivity(new Intent(LoginActivity.this, BankAccountActivity.class));
+            {
+                intent = new Intent(this, BankAccountActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+                finish();
+            }
         });
         eight.setOnClickListener(view -> {
             if(pass.length()<4)
                 pass = pass + eight.getText();
             if(pass.equals(pass_complete))
-                startActivity(new Intent(LoginActivity.this, BankAccountActivity.class));
+            {
+                intent = new Intent(this, BankAccountActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+                finish();
+            }
         });
         nine.setOnClickListener(view -> {
             if(pass.length()<4)
                 pass = pass + nine.getText();
             if(pass.equals(pass_complete))
-                startActivity(new Intent(LoginActivity.this, BankAccountActivity.class));
+            {
+                intent = new Intent(this, BankAccountActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+                finish();
+            }
         });
         zero.setOnClickListener(view -> {
             if(pass.length()<4)
                 pass = pass + zero.getText();
             if(pass.equals(pass_complete))
-                startActivity(new Intent(LoginActivity.this, BankAccountActivity.class));
+            {
+                intent = new Intent(this, BankAccountActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+                finish();
+            }
         });
     }
 }

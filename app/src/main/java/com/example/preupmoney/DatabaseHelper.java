@@ -17,7 +17,7 @@ import java.io.OutputStream;
 public class DatabaseHelper extends SQLiteOpenHelper
 {
     // для дальнейшего улучшения - https://guides.codepath.com/android/local-databases-with-sqliteopenhelper
-    private static final String DB_NAME = "preupmoney";
+    private static final String DB_NAME = "preupmoney3.db";
     private static String DB_PATH = "";
     private static final int DB_VERSION = 1;
 
@@ -29,19 +29,7 @@ public class DatabaseHelper extends SQLiteOpenHelper
         super(context, DB_NAME, null, DB_VERSION);
         DB_PATH = context.getApplicationInfo().dataDir + "/databases/";
         this.mContext = context;
-        copyDataBase();
-        this.getReadableDatabase();
-        /*try
-        {
-            BufferedReader br = new BufferedReader(new InputStreamReader(context.getResources().openRawResource(R.raw.preupmoney), "UTF-8"));
-            StringBuilder sb = new StringBuilder();
-            String line;
-            while ((line = br.readLine()) != null) {sb.append(line);}
-            mDataBase.execSQL(sb.toString());
-        } catch (IOException e)
-        {
-            e.printStackTrace();
-        }*/
+
     }
 
     public void updateDataBase() throws IOException {
@@ -155,12 +143,30 @@ public class DatabaseHelper extends SQLiteOpenHelper
                 "corp_account int not null,\n" +
                 "constraint fk_id_bank_account_requs foreign key (id_bank_account) references bank_account(id_bank_account)\n" +
                 ");";
+        String line7 = "CREATE TABLE auth_data (\n" +
+                "  id_auth int NOT NULL ,\n" +
+                "  phone_number_auth varchar(12) NOT NULL,\n" +
+                "  password_auth varchar(32) NOT NULL,\n" +
+                "  pin_code varchar(4) NOT NULL,\n" +
+                "  constraint pk_id_auth primary key (id_auth)\n" +
+                ")";
+        String data = "insert into auth_data values(1, '89223209959', '1234', '0000')";
+        String data1 = "insert into company values(1, 'preupmoney', 'perm', '1', 1)";
+        String data2 = "insert into clients values(1, 'Артём Иванов Викторович', 'Мужской', '1234 123456', 'г. Пермь, ул. Чернышевского 28')";
+        String data3 = "insert into bank_account values(1, 1, 1, '06-19-2023', 'active', 'preupmoney blue')";
+        String data4 = "insert into bank_requs values(1, 123131213, 12312312312, 12312313, 1123213)";
         db.execSQL(line);
         db.execSQL(line2);
         db.execSQL(line3);
         db.execSQL(line4);
         db.execSQL(line5);
         db.execSQL(line6);
+        db.execSQL(line7);
+        db.execSQL(data);
+        db.execSQL(data1);
+        db.execSQL(data2);
+        db.execSQL(data3);
+        db.execSQL(data4);
     }
 
     @Override

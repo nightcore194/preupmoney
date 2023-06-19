@@ -26,6 +26,7 @@ public class PaymentActivity extends AppCompatActivity {
     NestedScrollView nsv;
     ConstraintLayout csl;
     View search;
+    Intent intent;
     @SuppressLint("ResourceAsColor")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,58 +49,42 @@ public class PaymentActivity extends AppCompatActivity {
         }
         SQLiteDatabase mDb = mDBHelper.getWritableDatabase();
         getContacts();
-        bank_account.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(PaymentActivity.this, BankAccountActivity.class));
-            }
+        bank_account.setOnClickListener(view -> {
+            intent = new Intent(this, BankAccountActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+            finish();
         });
-        payment.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(PaymentActivity.this, PaymentActivity.class));
-            }
+        payment.setOnClickListener(view -> {
+            intent = new Intent(this, PaymentActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+            finish();
         });
-        service.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(PaymentActivity.this, ServiceActivity.class));
-            }
+        service.setOnClickListener(view -> {
+            intent = new Intent(this, ServiceActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+            finish();
         });
-        investment.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(PaymentActivity.this, InvestmentActivity.class));
-            }
+        investment.setOnClickListener(view -> {
+            intent = new Intent(this, InvestmentActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+            finish();
         });
-        chat.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(PaymentActivity.this, ChatActivity.class));
-            }
+        chat.setOnClickListener(view -> {
+            intent =new Intent(this, ChatActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+            finish();
         });
-        profile.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(PaymentActivity.this, ProfileActivity.class));
-            }
-        });
-        settings.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(PaymentActivity.this, SettingsActivity.class));
-            }
-        });
-        search.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(PaymentActivity.this, SearchActivity.class));
-            }
-        });
+        profile.setOnClickListener(view -> startActivity(new Intent(this, ProfileActivity.class)));
+        settings.setOnClickListener(view -> startActivity(new Intent(this, SettingsActivity.class)));
+        search.setOnClickListener(view -> startActivity(new Intent(this, SearchActivity.class)));
     }
-    @SuppressLint({"Range", "ResourceAsColor"})
+    @SuppressLint({"Range", "ResourceAsColor", "SetTextI18n"})
     public void getContacts() {
-        String phoneNumber = null;
 
         //Связываемся с контактными данными и берем с них значения id контакта, имени контакта и его номера:
         Uri CONTENT_URI = ContactsContract.Contacts.CONTENT_URI;
@@ -124,6 +109,7 @@ public class PaymentActivity extends AppCompatActivity {
                 @SuppressLint("Range") String contact_id = cursor.getString(cursor.getColumnIndex( _ID ));
                 @SuppressLint("Range") String name = cursor.getString(cursor.getColumnIndex(DISPLAY_NAME));
                 @SuppressLint("Range") int hasPhoneNumber = Integer.parseInt(cursor.getString(cursor.getColumnIndex(HAS_PHONE_NUMBER)));
+                String phoneNumber = null;
 
                 //Получаем имя:
                 if (hasPhoneNumber > 0) {
@@ -131,17 +117,18 @@ public class PaymentActivity extends AppCompatActivity {
                             Phone_CONTACT_ID + " = ?", new String[] { contact_id }, null);
 
                     //и соответствующий ему номер:
-                    while (phoneCursor.moveToNext()) {
+                    while (phoneCursor.moveToNext())
+                    {
                         phoneNumber = phoneCursor.getString(phoneCursor.getColumnIndex(NUMBER));
                         Button btn = new Button(getApplicationContext());
-                        btn.setText("\n Имя: " + name+"\n Телефон: " + phoneNumber);
+                        btn.setText("Имя: " + name);
                         btn.setTextColor(R.color.main_light_font_and_elem);
+                        String finalPhoneNumber = phoneNumber;
                         btn.setOnClickListener(view -> {
-                            setContentView(R.layout.bank_account_info);
-                            TextView textView = new TextView(getApplicationContext());
-                            csl = findViewById(R.id.bank_account_full_info);
-                            textView.setText("Дата открытия - "+ cursor.getString(3)+"\nТариф - "+ cursor.getString(5));
-                            csl.addView(textView);
+                            intent = new Intent(this, ContactFullActivity.class);
+                            intent.putExtra("name", name);
+                            intent.putExtra("phone", finalPhoneNumber);
+                            startActivity(intent);
                         });
                         nsv.addView(btn);
                     }

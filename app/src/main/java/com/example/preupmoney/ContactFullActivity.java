@@ -2,7 +2,6 @@ package com.example.preupmoney;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.core.widget.NestedScrollView;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -10,28 +9,27 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
 import java.io.IOException;
-import java.util.concurrent.atomic.AtomicReference;
 
-public class ProfileActivity extends AppCompatActivity {
+public class ContactFullActivity extends AppCompatActivity {
 
     Button bank_account, payment, service, investment, chat;
-    ImageButton settings, profile, go_back;
-    NestedScrollView nsv;
-    ConstraintLayout csl;
-    DatabaseHelper mDBHelper;
-    SQLiteDatabase mDb;
+    ImageButton settings, profile;
+    TextView textView;
     Intent intent;
-    @SuppressLint({"ResourceAsColor", "SetTextI18n"})
+    ImageButton back;
+    ConstraintLayout csl;
+    @SuppressLint({"SetTextI18n", "MissingInflatedId"})
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.profile);
+        setContentView(R.layout.contact_full);
+        back = findViewById(R.id.go_back);
         bank_account = findViewById(R.id.bank_account);
         payment = findViewById(R.id.payment);
         service = findViewById(R.id.service);
@@ -39,32 +37,13 @@ public class ProfileActivity extends AppCompatActivity {
         chat = findViewById(R.id.chat);
         settings = findViewById(R.id.settings);
         profile = findViewById(R.id.user);
-        go_back = findViewById(R.id.go_back);
-        mDBHelper = new DatabaseHelper(this);
-        try {
-            mDBHelper.updateDataBase();
-        } catch (IOException mIOException) {
-            throw new Error("UnableToUpdateDatabase");
-        }
-        mDb = mDBHelper.getWritableDatabase();
-        SharedPreferences preference = this.getSharedPreferences("preupmoney", MODE_PRIVATE);
-        String id = preference.getString("id","");
-        AtomicReference<Cursor> cursor = new AtomicReference<>(mDb.rawQuery("SELECT * FROM clients where id_client = ?", new String[]{id}));
-        if (cursor.get().moveToFirst())
-        {
-            TextView textView = new TextView(getApplicationContext());
-            csl = findViewById(R.id.block_profile);
-            textView.setText("ФИО - " + cursor.get().getString(1) +
-                    "\nПол - " + cursor.get().getString(2) +
-                    "\nАдрес - " + cursor.get().getString(4));
-            csl.addView(textView);
-        }
-        go_back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-        });
+        csl = findViewById(R.id.contact_full_block);
+        textView = findViewById(R.id.contact_full_block_tv);
+        Bundle arguments = getIntent().getExtras();
+        String name = arguments.get("name").toString();
+        String phone = arguments.get("phone").toString();
+        textView.setText("Имя: "+ name + "\nНомер телефона - "+ phone);
+        back.setOnClickListener(view -> finish());
         bank_account.setOnClickListener(view -> {
             intent = new Intent(this, BankAccountActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
