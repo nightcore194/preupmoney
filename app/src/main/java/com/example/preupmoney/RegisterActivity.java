@@ -46,7 +46,7 @@ public class RegisterActivity extends AppCompatActivity {
                 mDb.execSQL("INSERT INTO auth_data (phone_number_auth,  password_auth, pin_code) values(?,?,?)", new String[]{phone.getText().toString(), pass.getText().toString(), "0000"});
                 SharedPreferences.Editor editor = preference.edit();
                 editor.putString("auth", "true");
-                Cursor cursor = mDb.rawQuery("SELECT id_auth from auth_data where phone = ?", new String[]{phone.getText().toString()});
+                Cursor cursor = mDb.rawQuery("SELECT id_auth from auth_data where phone_number_auth = ?", new String[]{phone.getText().toString()});
                 if(cursor.moveToFirst())
                     editor.putString("id", cursor.getString(0));
                 editor.commit();

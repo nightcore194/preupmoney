@@ -44,7 +44,8 @@ public class BankAccountInfoActivity extends AppCompatActivity
         Bundle arguments = getIntent().getExtras();
         String date = arguments.get("date").toString();
         String tariff = arguments.get("tariff").toString();
-        textView.setText("Дата открытия - " + date + "\nТариф - " + tariff);
+        String balance = arguments.get("left").toString();
+        textView.setText("Дата открытия - " + date + "\nТариф - " + tariff+ "\nБаланс - " + balance);
         bank_account.setOnClickListener(view -> {
             intent = new Intent(this, BankAccountActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -77,7 +78,12 @@ public class BankAccountInfoActivity extends AppCompatActivity
         });
         profile.setOnClickListener(view -> startActivity(new Intent(this, ProfileActivity.class)));
         settings.setOnClickListener(view -> startActivity(new Intent(this, SettingsActivity.class)));
-        edit.setOnClickListener(view -> startActivity(new Intent(this, EditActivity.class)));
+        edit.setOnClickListener(view -> {
+            String id = arguments.get("id").toString();
+            intent = new Intent(this, EditActivity.class);
+            intent.putExtra("id", id);
+            startActivity(intent);
+        });
         go_back.setOnClickListener(view -> finish());
     }
 }

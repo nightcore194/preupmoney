@@ -16,6 +16,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.IOException;
 import java.util.concurrent.atomic.AtomicReference;
@@ -84,6 +85,7 @@ public class ProfileActivity extends AppCompatActivity {
             cv.put("passport_data", profile_info_pasport.getText().toString());
             cv.put("address", profile_info_address.getText().toString());
             mDb.update("clients", cv, "id_client = ?", new String[]{preference.getString("id","")});
+            Toast.makeText(this, "Успешно сохранено!", Toast.LENGTH_SHORT).show();
             finish();
         });
         bank_account.setOnClickListener(view -> {

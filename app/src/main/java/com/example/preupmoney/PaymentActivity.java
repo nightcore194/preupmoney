@@ -2,6 +2,7 @@ package com.example.preupmoney;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.content.ContextCompat;
 import androidx.core.widget.NestedScrollView;
 
 import android.annotation.SuppressLint;
@@ -23,10 +24,10 @@ public class PaymentActivity extends AppCompatActivity {
 
     Button bank_account, payment, service, investment, chat;
     ImageButton settings, profile;
-    NestedScrollView nsv;
     ConstraintLayout csl;
     View search;
     Intent intent;
+    Float aFloat = 0f;
     @SuppressLint("ResourceAsColor")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +41,7 @@ public class PaymentActivity extends AppCompatActivity {
         settings = findViewById(R.id.settings);
         profile = findViewById(R.id.user);
         search = findViewById(R.id.search_bar);
-        nsv = findViewById(R.id.nsv);
+        csl = findViewById(R.id.csl);
         DatabaseHelper mDBHelper = new DatabaseHelper(this);
         try {
             mDBHelper.updateDataBase();
@@ -122,15 +123,26 @@ public class PaymentActivity extends AppCompatActivity {
                         phoneNumber = phoneCursor.getString(phoneCursor.getColumnIndex(NUMBER));
                         Button btn = new Button(getApplicationContext());
                         btn.setText("Имя: " + name);
-                        btn.setTextColor(R.color.main_light_font_and_elem);
+                        btn.setTextSize(12);
+                        btn.setTextColor(ContextCompat.getColor(this, R.color.main_light_font_and_elem));
+                        ConstraintLayout.LayoutParams params = new ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.WRAP_CONTENT , ConstraintLayout.LayoutParams.WRAP_CONTENT);
+                        params.width = ConstraintLayout.LayoutParams.MATCH_PARENT;
+                        params.height = ConstraintLayout.LayoutParams.WRAP_CONTENT;
+                        params.leftToLeft = ConstraintLayout.LayoutParams.PARENT_ID;
+                        params.rightToRight = ConstraintLayout.LayoutParams.PARENT_ID;
+                        params.topToTop = ConstraintLayout.LayoutParams.PARENT_ID;
+                        params.bottomToBottom = ConstraintLayout.LayoutParams.PARENT_ID;
+                        params.verticalBias = aFloat;
+                        aFloat += (aFloat<=1f) ? 0.2f : 0f;
                         String finalPhoneNumber = phoneNumber;
+                        btn.setLayoutParams(params);
                         btn.setOnClickListener(view -> {
                             intent = new Intent(this, ContactFullActivity.class);
                             intent.putExtra("name", name);
                             intent.putExtra("phone", finalPhoneNumber);
                             startActivity(intent);
                         });
-                        nsv.addView(btn);
+                        csl.addView(btn);
                     }
                 }
             }

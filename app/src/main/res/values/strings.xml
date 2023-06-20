@@ -31,4 +31,9 @@
     <string name="address_profile">Адрес: </string>
     <string name="choose_tariff">Выберите тариф: </string>
     <string name="save_edit">Сохранить</string>
+    <string name="importing">Импортировать контакты</string>
+    <string name="transaction">Перевести</string>
+    <string name="choose_bank">Выберите счет: </string>
+    <string name="left_balance">Остаток счета: </string>
+    <string name="sum">Сумма: </string>
 </resources>

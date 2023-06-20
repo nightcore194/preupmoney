@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
@@ -27,6 +28,7 @@ public class AddActivity extends AppCompatActivity {
     SQLiteDatabase mDb;
     View search;
     Intent intent;
+    @SuppressLint("ResourceType")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,8 +45,6 @@ public class AddActivity extends AppCompatActivity {
         go_back = findViewById(R.id.go_back);
         choosen_tariff = findViewById(R.id.choosen_tariff);
         add_product = findViewById(R.id.add_product);
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.tariff, R.layout.add);
-        choosen_tariff.setAdapter(adapter);
         mDBHelper = new DatabaseHelper(this);
         try {
             mDBHelper.updateDataBase();
@@ -55,10 +55,13 @@ public class AddActivity extends AppCompatActivity {
         SharedPreferences preference = this.getSharedPreferences("preupmoney", MODE_PRIVATE);
         add_product.setOnClickListener(view ->
         {
-            mDb.execSQL("INSERT INTO bank_account (id_client,  id_company, date_of_open, status_of_account, tariff) values(?, ?, date('now'), ?, ?)", new String[]{preference.getString("id",""), "1", "active", choosen_tariff.getSelectedItem().toString()});
-            Cursor cursor = mDb.rawQuery("SELECT id_bank_account FROM bank_account WHERE id=LAST_INSERT_ID()", null);
+            mDb.execSQL("INSERT INTO bank_account (id_client,  id_company, date_of_open, status_of_account, tariff, balance) values(?, ?, date('now'), ?, ?, ?)", new String[]{preference.getString("id",""), "1", "active", choosen_tariff.getSelectedItem().toString(), "0"});
+            Cursor cursor = mDb.rawQuery("select seq from sqlite_sequence where name=?", new String[]{"bank_account"});
             if(cursor.moveToFirst())
                 mDb.execSQL("INSERT INTO bank_requs values(?, ?, ?, ?, ?)", new String[]{cursor.getString(0), "2", "2", "2","2"});
+            intent = new Intent(this, BankAccountActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
             finish();
         });
         go_back.setOnClickListener(view -> finish());

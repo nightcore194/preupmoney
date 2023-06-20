@@ -2,6 +2,7 @@ package com.example.preupmoney;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.content.ContextCompat;
 import androidx.core.widget.NestedScrollView;
 
 import android.annotation.SuppressLint;
@@ -59,10 +60,10 @@ public class BankAccountActivity extends AppCompatActivity
         if (cursor.moveToFirst()) {
             do {
                 Button btn = new Button(getApplicationContext());
-                btn.setText(cursor.getString(5));
-                btn.setTextColor(R.color.main_light_font_and_elem);
+                btn.setText(cursor.getString(5)+"\t\t Остаток: "+ cursor.getString(6));
+                btn.setTextSize(12);
+                btn.setTextColor(ContextCompat.getColor(this, R.color.main_light_font_and_elem));
                 ConstraintLayout.LayoutParams params = new ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.WRAP_CONTENT , ConstraintLayout.LayoutParams.WRAP_CONTENT);
-                aFloat += (aFloat>=1f) ? 0.05f : 0f;
                 params.width = ConstraintLayout.LayoutParams.MATCH_PARENT;
                 params.height = ConstraintLayout.LayoutParams.WRAP_CONTENT;
                 params.leftToLeft = ConstraintLayout.LayoutParams.PARENT_ID;
@@ -70,13 +71,18 @@ public class BankAccountActivity extends AppCompatActivity
                 params.topToTop = ConstraintLayout.LayoutParams.PARENT_ID;
                 params.bottomToBottom = ConstraintLayout.LayoutParams.PARENT_ID;
                 params.verticalBias = aFloat;
+                aFloat += (aFloat<=1f) ? 0.2f : 0f;
                 btn.setLayoutParams(params);
                 String date = cursor.getString(3);
                 String tariff = cursor.getString(5);
+                String id = cursor.getString(0);
+                String left = cursor.getString(6);
                 btn.setOnClickListener(view -> {
                     intent = new Intent(this, BankAccountInfoActivity.class);
                     intent.putExtra("date", date);
                     intent.putExtra("tariff", tariff);
+                    intent.putExtra("id", id);
+                    intent.putExtra("left", left);
                     startActivity(intent);
                 });
                 csl.addView(btn);

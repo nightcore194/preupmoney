@@ -62,8 +62,8 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="300dp"
-        app:layout_constraintVertical_bias="0.2"
+        android:layout_height="550dp"
+        app:layout_constraintVertical_bias="0.5"
         android:layout_margin="15dp"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
@@ -74,7 +74,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/search_bar"
             android:layout_width="match_parent"
-            android:layout_height="48dp"
+            android:layout_height="32dp"
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
             android:background="@drawable/search_bar"
@@ -111,43 +111,37 @@
                 <requestFocus />
             </EditText>
         </androidx.constraintlayout.widget.ConstraintLayout>
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/search_results"
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/nsv"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="true"
-            android:background="@drawable/elem"
+            android:layout_height="500dp"
+            android:contentDescription="@string/app_name"
+            android:fillViewport="true"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="1"
-            >
-            <androidx.core.widget.NestedScrollView
-                android:id="@+id/nsv"
+            app:layout_constraintVertical_bias="1.0">
+
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/search_results"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:contentDescription="@string/app_name"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:background="@drawable/elem"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="1.0">
+                app:layout_constraintVertical_bias="1"
+                >
 
-                <Button
-                    android:id="@+id/history"
-                    android:layout_width="138dp"
-                    android:layout_height="64dp"
-                    android:backgroundTint="@color/main_light_background"
-                    android:rotationY="0"
-                    android:layout_marginStart="0dp"
-                    android:layout_marginTop="40dp">
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.core.widget.NestedScrollView>
 
-                </Button>
-            </androidx.core.widget.NestedScrollView>
-        </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout

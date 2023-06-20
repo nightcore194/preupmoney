@@ -172,6 +172,8 @@ public class LoginActivity extends AppCompatActivity
                     authorize.setVisibility(View.INVISIBLE);
                     pin.setVisibility(View.VISIBLE);
                 }
+                else
+                    Toast.makeText(this, "Проверьте правильность введенных данных", Toast.LENGTH_SHORT).show();
 
             }
         });

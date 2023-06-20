@@ -41,8 +41,7 @@ public class EditActivity extends AppCompatActivity {
         go_back = findViewById(R.id.go_back);
         save_product = findViewById(R.id.save_product);
         choosen_tariff = findViewById(R.id.choosen_tariff);
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.tariff, R.layout.add);
-        choosen_tariff.setAdapter(adapter);
+        Bundle arguments = getIntent().getExtras();
         mDBHelper = new DatabaseHelper(this);
         try {
             mDBHelper.updateDataBase();
@@ -55,7 +54,7 @@ public class EditActivity extends AppCompatActivity {
         save_product.setOnClickListener(view -> {
             ContentValues cv = new ContentValues();
             cv.put("tariff", choosen_tariff.getSelectedItem().toString());
-            mDb.update("bank_account", cv, "id_client = ?", new String[]{preference.getString("id","")});
+            mDb.update("bank_account", cv, "id_bank_account = ?", new String[]{arguments.get("id").toString()});
             finish();
         });
         bank_account.setOnClickListener(view -> {
