@@ -49,6 +49,7 @@ public class RegisterActivity extends AppCompatActivity {
                 Cursor cursor = mDb.rawQuery("SELECT id_auth from auth_data where phone_number_auth = ?", new String[]{phone.getText().toString()});
                 if(cursor.moveToFirst())
                     editor.putString("id", cursor.getString(0));
+                mDb.execSQL("insert into clients (id_auth, FIO, gender, passport_data, address) values(?, ?, ?, ?, ?)", new String[]{cursor.getString(0), "", "", "", ""});
                 editor.commit();
                 intent = new Intent(this, BankAccountActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

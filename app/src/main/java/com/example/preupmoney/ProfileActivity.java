@@ -61,10 +61,10 @@ public class ProfileActivity extends AppCompatActivity {
         AtomicReference<Cursor> cursor = new AtomicReference<>(mDb.rawQuery("SELECT * FROM clients where id_client = ?", new String[]{id}));
         if (cursor.get().moveToFirst())
         {
-            profile_info_name.setText(cursor.get().getString(1));
-            profile_info_gender.setText(cursor.get().getString(2));
-            profile_info_pasport.setText(cursor.get().getString(3));
-            profile_info_address.setText(cursor.get().getString(4));
+            profile_info_name.setText(cursor.get().getString(2));
+            profile_info_gender.setText(cursor.get().getString(3));
+            profile_info_pasport.setText(cursor.get().getString(4));
+            profile_info_address.setText(cursor.get().getString(5));
         }
         go_back.setOnClickListener(view -> finish());
         logout.setOnClickListener(view -> {

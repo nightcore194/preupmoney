@@ -17,7 +17,7 @@ import java.io.OutputStream;
 public class DatabaseHelper extends SQLiteOpenHelper
 {
     // для дальнейшего улучшения - https://guides.codepath.com/android/local-databases-with-sqliteopenhelper
-    private static final String DB_NAME = "preupmoney_fina1.db";
+    private static final String DB_NAME = "preupmoney_final1.db";
     private static String DB_PATH = "";
     private static final int DB_VERSION = 1;
 
@@ -102,10 +102,12 @@ public class DatabaseHelper extends SQLiteOpenHelper
                 "constraint fk_id_company foreign key (id_company) references company(id_company)" +")";
         String line3 = "create table clients(\n" +
                 "id_client INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,\n" +
-                "FIO varchar(50) not null,\n" +
-                "gender varchar(10) not null,\n" +
-                "passport_data varchar(50) not null,\n" +
-                "address varchar(50) not null\n" +
+                "id_auth int not null,\n" +
+                "FIO varchar(50),\n" +
+                "gender varchar(10),\n" +
+                "passport_data varchar(50),\n" +
+                "address varchar(50),\n" +
+                "constraint fk_id_auth foreign key (id_auth) references auth_data(id_auth)"+
                 ");\n";
         String line4 = "create table consult(\n" +
                 "id_consult INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,\n" +
@@ -146,16 +148,16 @@ public class DatabaseHelper extends SQLiteOpenHelper
                 ")";
         String data = "insert into auth_data (phone_number_auth, password_auth, pin_code) values('89223209959', '1234', '0000')";
         String data1 = "insert into company (name_company, address, license, phone) values('preupmoney', 'perm', '1', 1)";
-        String data2 = "insert into clients (FIO, gender, passport_data, address) values('Артём Иванов Викторович', 'Мужской', '1234 123456', 'г. Пермь, ул. Чернышевского 28')";
+        String data2 = "insert into clients (id_auth, FIO, gender, passport_data, address) values(1, 'Артём Иванов Викторович', 'Мужской', '1234 123456', 'г. Пермь, ул. Чернышевского 28')";
         String data3 = "insert into bank_account (id_client, id_company, date_of_open, status_of_account, tariff, balance) values(1, 1, '06-19-2023', 'active', 'BlueCard', '1')";
         String data4 = "insert into bank_requs values(1, 123131213, 12312312312, 12312313, 1123213)";
+        db.execSQL(line7);
         db.execSQL(line);
         db.execSQL(line2);
         db.execSQL(line3);
         db.execSQL(line4);
         db.execSQL(line5);
         db.execSQL(line6);
-        db.execSQL(line7);
         db.execSQL(data);
         db.execSQL(data1);
         db.execSQL(data2);

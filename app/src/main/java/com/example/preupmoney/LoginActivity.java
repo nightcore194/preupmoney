@@ -171,10 +171,10 @@ public class LoginActivity extends AppCompatActivity
                     pass_complete = s[3];
                     authorize.setVisibility(View.INVISIBLE);
                     pin.setVisibility(View.VISIBLE);
+                    break;
                 }
-                else
+                if(Objects.equals(authed, "true"))
                     Toast.makeText(this, "Проверьте правильность введенных данных", Toast.LENGTH_SHORT).show();
-
             }
         });
         face_id.setOnClickListener(view -> biometricPrompt.authenticate(promptInfo));
